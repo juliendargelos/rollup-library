@@ -1,0 +1,46 @@
+name: initialize
+
+on: push
+
+env:
+  TEMPLATE_OWNER: juliendargelos
+  TEMPLATE_NAME: rollup-library
+
+jobs:
+  initialize:
+    name: Initialize
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check repository
+      id: repository
+      run: |
+        if [ ${{github.repository}} = $TEMPLATE_OWNER/$TEMPLATE_NAME ]
+        then
+          echo ::set-output name=type::template
+        else
+          echo ::set-output name=type::instance
+        fi
+    - name: Checkout
+      if: steps.repository.outputs.type == 'instance'
+      uses: actions/checkout@v1
+    - name: Replace repository and package name
+      if: steps.repository.outputs.type == 'instance'
+      run: |
+        sed -i "s#${TEMPLATE_OWNER}/${TEMPLATE_NAME}#${{github.repository}}#g" package.json readme.md
+        sed -i "s#${TEMPLATE_NAME}#${{github.event.repository.name}}#g" package.json readme.md
+    - name: Remove template related content
+      if: steps.repository.outputs.type == 'instance'
+      run: |
+        sed -i 's#"description":.*#"description": "",#' package.json
+        sed -i '1,6!d' readme.md
+    - name: Clean
+      if: steps.repository.outputs.type == 'instance'
+      run: rm .github/workflows/initialize.yml
+    - name: Push changes
+      if: steps.repository.outputs.type == 'instance'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add --all
+        git commit -m "Initialize package"
+        git push "https://${{github.actor}}:${{github.token}}@github.com/${{github.repository}}.git" HEAD:master
