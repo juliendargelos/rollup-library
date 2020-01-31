@@ -1,7 +1,7 @@
 {
   "name": "rollup-library",
   "version": "0.0.0",
-  "description": "Library template for rollup and typescript",
+  "description": "Library template for rollup and typescript, powered by github actions",
   "author": "Julien Dargelos <contact@juliendargelos.com>",
   "license": "MIT",
   "repository": "juliendargelos/rollup-library",
