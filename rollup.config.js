@@ -40,10 +40,10 @@ export default [
       { ...config.output, file: pkg.module, format: 'es' }
     ],
     plugins: [
-      cleaner({ targets: [pkg.main.replace(/\/[^\/]+$/, '')] }),
-      eslint(),
+      ...config.plugins,
       ts(),
-      ...config.plugins
+      eslint(),
+      cleaner({ targets: [pkg.main.replace(/\/[^\/]+$/, '')] }),
     ]
   },
 
