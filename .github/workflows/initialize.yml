@@ -24,6 +24,11 @@ jobs:
       run: |
         sed -i "s#${TEMPLATE_OWNER}/${TEMPLATE_NAME}#${{github.repository}}#g" package.json readme.md
         sed -i "s#${TEMPLATE_NAME}#${{github.event.repository.name}}#g" package.json readme.md
+    - name: Remove lockfiles from .gitignore
+      if: steps.repository.outputs.type == 'instance'
+      run: |
+        sed -i '#yarn.lock#d' .gitignore
+        sed -i '#package-lock.json#d' .gitignore
     - name: Remove template related content
       if: steps.repository.outputs.type == 'instance'
       run: |
