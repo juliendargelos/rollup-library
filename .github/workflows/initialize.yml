@@ -5,10 +5,6 @@ on:
     branches:
     - master
 
-env:
-  TEMPLATE_OWNER: juliendargelos
-  TEMPLATE_NAME: rollup-library
-
 jobs:
   initialize:
     name: Initialize
@@ -17,28 +13,34 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Check repository
-      id: repository
+      id: check
       run: echo ::set-output name=type::$((( $(git rev-list --count HEAD) < 2 )) && echo instance || echo template)
-    - name: Replace repository and package name
-      if: steps.repository.outputs.type == 'instance'
+    - name: Extract template repository and package name
+      id: extract
+      if: steps.check.outputs.type == 'instance'
       run: |
-        sed -i "s#${TEMPLATE_OWNER}/${TEMPLATE_NAME}#${{github.repository}}#g" package.json readme.md
-        sed -i "s#${TEMPLATE_NAME}#${{github.event.repository.name}}#g" package.json readme.md
+        echo ::set-output name=package::$(grep -o '"name": "[^"]*' package.json | cut -d'"' -f4)
+        echo ::set-output name=repository::$(grep -o '"repository": "[^"]*' package.json | cut -d'"' -f4)
+    - name: Replace repository and package name
+      if: steps.check.outputs.type == 'instance'
+      run: |
+        sed -i "s#${{steps.extract.outputs.repository}}#${{github.repository}}#g" package.json readme.md
+        sed -i "s#${{steps.extract.outputs.package}}#${{github.event.repository.name}}#g" package.json readme.md
     - name: Remove lockfiles from .gitignore
-      if: steps.repository.outputs.type == 'instance'
+      if: steps.check.outputs.type == 'instance'
       run: |
         sed -i '/yarn.lock/d' .gitignore
         sed -i '/package-lock.json/d' .gitignore
     - name: Remove template related content
-      if: steps.repository.outputs.type == 'instance'
+      if: steps.check.outputs.type == 'instance'
       run: |
         sed -i 's#"description":.*#"description": "",#' package.json
         sed -i '1,6!d' readme.md
     - name: Clean
-      if: steps.repository.outputs.type == 'instance'
+      if: steps.check.outputs.type == 'instance'
       run: rm .github/workflows/initialize.yml
     - name: Push changes
-      if: steps.repository.outputs.type == 'instance'
+      if: steps.check.outputs.type == 'instance'
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
