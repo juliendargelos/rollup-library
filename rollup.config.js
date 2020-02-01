@@ -1,11 +1,11 @@
 import autoExternal from 'rollup-plugin-auto-external'
 import nodeResolve from '@rollup/plugin-node-resolve'
-import typescript from 'rollup-plugin-typescript2'
 import commonjs from '@rollup/plugin-commonjs'
 import cleaner from 'rollup-plugin-cleaner'
 import alias from '@rollup/plugin-alias'
 import serve from 'rollup-plugin-serve'
 import html from '@rollup/plugin-html'
+import ts from 'rollup-plugin-ts'
 import { terser } from 'rollup-plugin-terser'
 import { eslint } from 'rollup-plugin-eslint'
 
@@ -42,7 +42,7 @@ export default [
     plugins: [
       cleaner({ targets: [pkg.main.replace(/\/[^\/]+$/, '')] }),
       eslint(),
-      typescript({ clean: true }),
+      ts(),
       ...config.plugins
     ]
   },
@@ -60,11 +60,9 @@ export default [
     },
     plugins: [
       ...config.plugins,
-      typescript({
-        clean: true,
-        tsconfigOverride: {
-          compilerOptions: { target: 'es5' }
-        }
+      ts({
+        transpileOnly: true,
+        tsconfig: tsconfig => ({ ...tsconfig, target: 'es5' })
       }),
       nodeResolve({ extensions: ['.ts', '.js'] }),
       commonjs(),
@@ -82,16 +80,12 @@ export default [
     },
     plugins: [
       ...config.plugins,
-      typescript({
-        clean: true,
-        tsconfigOverride: {
-          include: ['demo'],
-          compilerOptions: {
-            target: 'es5',
-            declaration: false,
-            declarationMap: false
-          }
-        }
+      ts({
+        tsconfig: tsconfig => ({
+          ...tsconfig,
+          target: 'es5',
+          declaration: false
+        })
       }),
       cleaner({ targets: ['demo-dist'] }),
       nodeResolve({ extensions: ['.ts', '.js'] }),
