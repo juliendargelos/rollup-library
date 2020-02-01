@@ -15,17 +15,13 @@ jobs:
     - name: Check repository
       id: check
       run: echo ::set-output name=type::$((( $(git rev-list --count HEAD) < 2 )) && echo instance || echo template)
-    - name: Extract template repository and package name
-      id: extract
-      if: steps.check.outputs.type == 'instance'
-      run: |
-        echo ::set-output name=package::$(grep -o '"name": "[^"]*' package.json | cut -d'"' -f4)
-        echo ::set-output name=repository::$(grep -o '"repository": "[^"]*' package.json | cut -d'"' -f4)
     - name: Replace repository and package name
       if: steps.check.outputs.type == 'instance'
       run: |
-        sed -i "s#${{steps.extract.outputs.repository}}#${{github.repository}}#g" package.json readme.md
-        sed -i "s#${{steps.extract.outputs.package}}#${{github.event.repository.name}}#g" package.json readme.md
+        name=$(grep -o '"name": "[^"]*' package.json | cut -d'"' -f4)
+        repository=$(grep -o '"repository": "[^"]*' package.json | cut -d'"' -f4)
+        sed -i "s#${repository}#${{github.repository}}#g" package.json readme.md
+        sed -i "s#${name}#${{github.event.repository.name}}#g" package.json readme.md
     - name: Remove lockfiles from .gitignore
       if: steps.check.outputs.type == 'instance'
       run: |
