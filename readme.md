@@ -28,4 +28,4 @@ Click on <sub>[![Use this template](https://img.shields.io/badge/-Use%20this%20t
 - Build demo and deploy to Github Pages on push to master<br>
   *Requires `PERSONAL_TOKEN` secret to be set as a [GitHub personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) with full `repo` scope.*
 
-The [publish](.github/workflows/publish.yml) and [demo](.github/workflows/demo.yml) workflows are disabled by default, [add the required secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets) and remove the `.sample` suffix from the [corresponding files](.github/workflows) to enable them.
+The [publish](.github/workflows/publish.yml.sample) and [demo](.github/workflows/demo.yml.sample) workflows are disabled by default, [add the required secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets) and remove the `.sample` suffix from the corresponding files to enable them.
