@@ -27,8 +27,8 @@ jobs:
     - name: Remove lockfiles from .gitignore
       if: steps.repository.outputs.type == 'instance'
       run: |
-        sed -i '#yarn.lock#d' .gitignore
-        sed -i '#package-lock.json#d' .gitignore
+        sed -i '/yarn.lock/d' .gitignore
+        sed -i '/package-lock.json/d' .gitignore
     - name: Remove template related content
       if: steps.repository.outputs.type == 'instance'
       run: |
