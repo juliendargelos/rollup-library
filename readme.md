@@ -6,13 +6,15 @@
 
 Library template for rollup and typescript, powered by github actions.
 
+Dependencies always up to date thanks to [dependabot](https://dependabot.com).
+
 ### Usage
 
 Click on <sub>[![Use this template](https://img.shields.io/badge/-Use%20this%20template-brightgreen)](https://github.com/juliendargelos/rollup-library/generate)</sub> then wait for the [initialize workflow](.github/workflows/initialize.yml) to complete. The package name and urls will be automatically replaced at initialization. You may want to change the author name in `package.json` and `LICENSE`.
 
 ### Features
 
-##### Bundling
+#### Bundling
 
 - Rollup, TypeScript, ESLint and Jest
 - ESM, CJS and UMD bundles
@@ -20,7 +22,7 @@ Click on <sub>[![Use this template](https://img.shields.io/badge/-Use%20this%20t
 - Development server with demo in watch mode
 - Terser for browser and demo bundle
 
-##### Continuous integration (Github Actions)
+#### Continuous integration (Github Actions)
 
 - Build and test on pull requests and push to master
 - Build, test and publish to npm when a new version is pushed to master<br>
