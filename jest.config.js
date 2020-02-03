@@ -7,7 +7,7 @@ module.exports = {
   testMatch: ['<rootDir>/test/**/*.ts'],
   testPathIgnorePatterns: ['.+.d.ts'],
   collectCoverage: true,
-  collectCoverageFrom: ['<rootDir>/src'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   coverageReporters: ['text'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths)
 }
