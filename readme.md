@@ -4,9 +4,7 @@
 [![build](https://github.com/juliendargelos/rollup-library/workflows/build/badge.svg?branch=master)](https://github.com/juliendargelos/rollup-library/actions?workflow=build)
 [![version](https://img.shields.io/github/package-json/v/juliendargelos/rollup-library)](https://github.com/juliendargelos/rollup-library)
 
-Library template for rollup and typescript, powered by github actions.
-
-Dependencies always up to date thanks to [dependabot](https://dependabot.com).
+Library template for rollup and typescript, powered by github actions. Dependencies always up to date thanks to [dependabot](https://dependabot.com).
 
 *See [rollup-application](https://github.com/juliendargelos/rollup-application) if you need an application template.*
 
