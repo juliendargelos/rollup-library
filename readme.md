@@ -19,15 +19,12 @@ Click on <sub>[![Use this template](https://img.shields.io/badge/-Use%20this%20t
 - Rollup, TypeScript, ESLint and Jest
 - ESM, CJS and UMD bundles
 - Path alias from tsconfig.json synced with rollup
-- Development server with demo in watch mode
-- Terser for browser and demo bundle
+- Terser for browser bundle
 
 #### Continuous integration (Github Actions)
 
 - Build and test on pull requests and push to master
 - Build, test and publish to npm when a new version is pushed to master<br>
   *Requires `NODE_TOKEN` secret to be set as a [NPM authentication token](https://docs.npmjs.com/about-authentication-tokens).*
-- Build demo and deploy to Github Pages on push to master<br>
-  *Requires `PERSONAL_TOKEN` secret to be set as a [GitHub personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) with full `repo` scope.*
 
-The [publish](.github/workflows/publish.yml.sample) and [demo](.github/workflows/demo.yml.sample) workflows are disabled by default, [add the required secrets](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets) and remove the `.sample` suffix from the corresponding files to enable them.
+The [publish](.github/workflows/publish.yml.sample) workflow is disabled by default, [add the required secret](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets) and remove the `.sample` suffix to enable it.
