@@ -8,7 +8,7 @@
   "homepage": "https://github.com/juliendargelos/rollup-library#readme",
   "bugs": "https://github.com/juliendargelos/rollup-library/issues",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "files": [

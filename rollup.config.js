@@ -18,29 +18,27 @@ const production = !development
 const demo = process.env.DEMO || development
 const build = !demo
 
-const config = {
-  input: 'src/index.ts',
-  output: { sourcemap: true },
-  plugins: [
-    build && autoExternal(),
-    alias({
-      resolve: ['.ts'],
-      entries: Object
-        .entries(tsconfig.compilerOptions.paths)
-        .map(([find, [replacement]]) => ({ find, replacement }))
-    })
-  ]
-}
+const input = 'src/index.ts'
+
+const plugins = [
+  build && autoExternal(),
+  alias({
+    resolve: ['.ts'],
+    entries: Object
+      .entries(tsconfig.compilerOptions.paths)
+      .map(([find, [replacement]]) => ({ find, replacement }))
+  })
+]
 
 export default [
   build && {
-    ...config,
+    input,
     output: [
-      { ...config.output, file: pkg.main, format: 'cjs' },
-      { ...config.output, file: pkg.module, format: 'es' }
+      { file: pkg.main, format: 'cjs', sourcemap: true },
+      { file: pkg.module, format: 'es', sourcemap: true }
     ],
     plugins: [
-      ...config.plugins,
+      ...plugins,
       eslint(),
       ts(),
       cleaner({ targets: [pkg.main.replace(/\/[^\/]+$/, '')] }),
@@ -48,22 +46,19 @@ export default [
   },
 
   build && {
-    ...config,
+    input,
     output: {
-      ...config.output,
       file: pkg.browser,
       format: 'umd',
+      sourcemap: true,
       name: pkg.name
         .split(/[^a-z0-9]+/i)
         .map(part => part && part[0].toUpperCase() + part.slice(1))
         .join('')
     },
     plugins: [
-      ...config.plugins,
-      ts({
-        transpileOnly: true,
-        tsconfig: tsconfig => ({ ...tsconfig, target: 'es5' })
-      }),
+      ...plugins,
+      ts({ transpileOnly: true }),
       nodeResolve({ extensions: ['.ts', '.js'] }),
       commonjs(),
       terser()
@@ -71,22 +66,15 @@ export default [
   },
 
   demo && {
-    ...config,
     input: 'demo/index.ts',
     output: {
-      ...config.output,
       file: 'demo-dist/index.js',
-      format: 'iife'
+      format: 'iife',
+      sourcemap: true
     },
     plugins: [
-      ...config.plugins,
-      ts({
-        tsconfig: tsconfig => ({
-          ...tsconfig,
-          target: 'es5',
-          declaration: false
-        })
-      }),
+      ...plugins,
+      ts({ tsconfig: tsconfig => ({ ...tsconfig, declaration: false }) }),
       cleaner({ targets: ['demo-dist'] }),
       nodeResolve({ extensions: ['.ts', '.js'] }),
       commonjs(),
